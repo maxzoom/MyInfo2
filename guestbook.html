@@ -6,25 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guestbook - Kim Jeong Soo</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Inter:wght@400;600&display=swap"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
+        /* Override body for scroll if needed, though style.css handles layout */
         body {
-            overflow-y: auto !important;
-            /* Force scroll */
-            background-color: #f0f2f5;
+            /* style.css handles layout, but let's ensure scrolling works on right panel */
+        }
+
+        /* Guestbook specific styles that fit into right-panel */
+        .right-panel {
+            overflow-y: auto;
+            /* Allow scrolling for long guestbook list */
+            justify-content: flex-start;
+            /* Start from top */
+            padding-top: 4rem;
         }
 
         .guestbook-container {
+            width: 100%;
             max-width: 600px;
-            margin: 0 auto;
             text-align: left;
-            padding: 40px 20px;
         }
 
         .back-btn {
             display: inline-flex;
             align-items: center;
             padding: 10px 20px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             background-color: white;
             color: #333;
             text-decoration: none;
@@ -32,11 +45,18 @@
             font-weight: bold;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s;
+            font-size: 0.9rem;
         }
 
         .back-btn:hover {
             transform: translateY(-2px);
             color: #0070f3;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            /* Slightly smaller than main title */
+            margin-bottom: 0.5rem;
         }
 
         .guestbook-form {
@@ -83,6 +103,7 @@
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             border: 1px solid #eee;
+            text-align: left;
         }
 
         .message-header {
@@ -99,27 +120,46 @@
             font-size: 1.05em;
             line-height: 1.5;
             white-space: pre-wrap;
-            /* Preserve line breaks */
         }
     </style>
 </head>
 
 <body>
-    <div class="guestbook-container">
-        <a href="index.html" class="back-btn">
-            <i class="fas fa-home" style="margin-right: 8px;"></i> 돌아가기
-        </a>
-        <h1>Guestbook</h1>
-        <p>Leave a message!</p>
+    <div class="container">
+        <!-- Left Section (Copied from index.html) -->
+        <div class="left-panel">
+            <header class="logo">
+                EasyGeo Inc.
+            </header>
 
-        <form id="guestbookForm" class="guestbook-form">
-            <input type="text" id="name" placeholder="Your Name" required>
-            <textarea id="message" rows="3" placeholder="Your Message" required></textarea>
-            <button type="submit">Post Message</button>
-        </form>
+            <div class="profile-card">
+                <img src="./profile_photo_v2.jpg" alt="Profile" class="profile-img">
+            </div>
 
-        <div id="loading">Loading messages...</div>
-        <div id="messages"></div>
+            <div class="left-footer">
+                <a href="#">개인정보 취급방침</a>
+            </div>
+        </div>
+
+        <!-- Right Section -->
+        <div class="right-panel">
+            <div class="guestbook-container">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-home" style="margin-right: 8px;"></i> 돌아가기
+                </a>
+                <h1>Guestbook</h1>
+                <p style="margin-bottom: 2rem;">자유롭게 방명록을 남겨주세요!</p>
+
+                <form id="guestbookForm" class="guestbook-form">
+                    <input type="text" id="name" placeholder="이름 (Your Name)" required>
+                    <textarea id="message" rows="3" placeholder="메시지 (Your Message)" required></textarea>
+                    <button type="submit">남기기 (Post)</button>
+                </form>
+
+                <div id="loading">Loading messages...</div>
+                <div id="messages"></div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -180,7 +220,7 @@
                 alert('Error posting message');
             } finally {
                 btn.disabled = false;
-                btn.innerText = 'Post Message';
+                btn.innerText = '남기기 (Post)';
             }
         });
 
