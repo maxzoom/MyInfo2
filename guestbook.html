@@ -12,6 +12,7 @@
         href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Inter:wght@400;600&display=swap"
         rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         /* Override body for scroll if needed, though style.css handles layout */
         body {
@@ -163,12 +164,19 @@
     </div>
 
     <script>
-        const API_URL = '/api/guestbook';
+        const supabaseUrl = 'https://vdilnsrvkkdnvafdcees.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkaWxuc3J2a2tkbnZhZmRjZWVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzMTEwMTYsImV4cCI6MjA4Mzg4NzAxNn0.sIa7wYUuQB8Kmajaq-s9-odbAWrT8ofHglvd2WIjxYs'
+        const client = supabase.createClient(supabaseUrl, supabaseKey)
 
         async function loadMessages() {
             try {
-                const res = await fetch(API_URL);
-                const data = await res.json();
+                const { data, error } = await client
+                    .from('guestbook')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(20);
+
+                if (error) throw error;
 
                 const container = document.getElementById('messages');
                 document.getElementById('loading').style.display = 'none';
@@ -203,21 +211,19 @@
             btn.innerText = 'Posting...';
 
             try {
-                const res = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, message })
-                });
+                const { data, error } = await client
+                    .from('guestbook')
+                    .insert([{ name, message }])
+                    .select();
 
-                if (res.ok) {
-                    document.getElementById('name').value = '';
-                    document.getElementById('message').value = '';
-                    loadMessages(); // Reload list
-                } else {
-                    alert('Failed to post message');
-                }
+                if (error) throw error;
+
+                document.getElementById('name').value = '';
+                document.getElementById('message').value = '';
+                loadMessages(); // Reload list
             } catch (err) {
-                alert('Error posting message');
+                console.error(err);
+                alert('Error posting message: ' + err.message);
             } finally {
                 btn.disabled = false;
                 btn.innerText = '남기기 (Post)';
