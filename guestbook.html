@@ -1,73 +1,114 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guestbook - Kim Jeong Soo</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        body {
+            overflow-y: auto !important;
+            /* Force scroll */
+            background-color: #f0f2f5;
+        }
+
         .guestbook-container {
             max-width: 600px;
             margin: 0 auto;
             text-align: left;
-            padding: 20px;
+            padding: 40px 20px;
         }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
+            margin-bottom: 30px;
+            background-color: white;
+            color: #333;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            color: #0070f3;
+        }
+
         .guestbook-form {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
             margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
-        .guestbook-form input, .guestbook-form textarea {
-            padding: 10px;
-            border-radius: 5px;
+
+        .guestbook-form input,
+        .guestbook-form textarea {
+            padding: 12px;
+            border-radius: 8px;
             border: 1px solid #ddd;
             font-family: inherit;
+            font-size: 1rem;
         }
+
         .guestbook-form button {
-            padding: 10px;
+            padding: 12px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             background-color: #0070f3;
             color: white;
             cursor: pointer;
             font-weight: bold;
+            font-size: 1rem;
+            transition: background 0.2s;
         }
+
         .guestbook-form button:hover {
             background-color: #0051a2;
         }
+
         .message-card {
             background: white;
             color: black;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eee;
         }
+
         .message-header {
             display: flex;
             justify-content: space-between;
             font-size: 0.9em;
             color: #666;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f0f0f0;
         }
+
         .message-content {
-            font-size: 1.1em;
-        }
-        .back-link {
-            display: block;
-            margin-bottom: 20px;
-            color: white;
-            text-decoration: none;
+            font-size: 1.05em;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            /* Preserve line breaks */
         }
     </style>
 </head>
+
 <body>
     <div class="guestbook-container">
-        <a href="index.html" class="back-link">← Back to Home</a>
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-home" style="margin-right: 8px;"></i> 돌아가기
+        </a>
         <h1>Guestbook</h1>
         <p>Leave a message!</p>
 
@@ -88,7 +129,7 @@
             try {
                 const res = await fetch(API_URL);
                 const data = await res.json();
-                
+
                 const container = document.getElementById('messages');
                 document.getElementById('loading').style.display = 'none';
                 container.innerHTML = '';
@@ -147,4 +188,5 @@
         loadMessages();
     </script>
 </body>
+
 </html>
